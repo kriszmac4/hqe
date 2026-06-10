@@ -1,0 +1,50 @@
+# HQE — Example Configuration
+# Copy to config.yaml and customize:
+#   cp config.example.yaml ~/.config/hqe/config.yaml
+
+hqe:
+  # Cortex layer: session databases
+  cortex:
+    enabled: true
+    # Glob patterns for session DB files
+    paths:
+      - "~/.hermes/profiles/*/state.db"
+    # Full-text search config
+    fts5:
+      max_results: 20
+      min_token_len: 2
+
+  # Codex layer: knowledge base markdown files
+  codex:
+    enabled: true
+    paths:
+      - "~/knowledge-base/**/*.md"
+      - "~/repos/*/knowledge/**/*.md"
+      - "~/repos/*/docs/**/*.md"
+    # Exclusion patterns
+    exclude:
+      - "**/node_modules/**"
+      - "**/venv/**"
+    embedding:
+      enabled: false  # requires sentence-transformers
+      model: "all-MiniLM-L6-v2"
+
+  # Graph layer: entity-relationship store
+  graph:
+    enabled: true
+    # Path to entity stores
+    paths:
+      - "~/.hermes/facts/*.db"
+
+  # Ranking & output
+  ranking:
+    max_results: 20
+    min_score: 0.3
+    boost_freshness: 0.2  # recency multiplier
+    boost_trust: 0.3      # trust score multiplier
+
+  # CLI defaults
+  cli:
+    default_layer: all      # all, cortex, codex, graph
+    format: pretty           # pretty, json, csv, silent
+    color: auto             # auto, always, never
